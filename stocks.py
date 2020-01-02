@@ -1,6 +1,6 @@
 """
 Author : Bastien RATAT
-Scraping CAC40 thirty best stocks on Yahoo Finance
+Scraping CAC40 30 best stocks on Yahoo Finance
 """
 
 import requests
@@ -8,9 +8,10 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import re
 import pandas as pd
-import numpy as np
 from matplotlib import pyplot as plt
 import seaborn as sns
+import os
+import datetime
 
 pattern_changes = '\+\d\.\d\d\%|\-\d\.\d\d\%'
 url = 'https://finance.yahoo.com/quote/%5EFCHI/components?p=%5EFCHI'
@@ -63,10 +64,14 @@ stock_dict = {
 # DataFrame in Pandas
 stocks_df = pd.DataFrame.from_dict(stock_dict)
 
+# create a file extension
+scrap_day = datetime.date.today()
+
 # Plot datas using sns and plt
 sns.barplot(x='symbol', y='last prices', data=stocks_df, palette="Blues_d")
 plt.xticks(rotation=90)
 plt.xlabel('')
 plt.ylabel('PRICES')
 plt.title('CAC40 30 best stocks on Yahoo Finance')
-plt.savefig("cac40_top_stocks.png")
+plt.savefig(f"cac40_{scrap_day}.png")
+plt.show()
