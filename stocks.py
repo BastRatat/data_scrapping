@@ -13,6 +13,12 @@ import seaborn as sns
 import os
 import datetime
 
+
+def sort_df(df):
+    new_df = df.sort_values("last prices", ascending=False)
+    return new_df
+
+
 pattern_changes = '\+\d\.\d\d\%|\-\d\.\d\d\%'
 url = 'https://finance.yahoo.com/quote/%5EFCHI/components?p=%5EFCHI'
 driver_path = 'C:/chromedriver'
@@ -68,10 +74,15 @@ stocks_df = pd.DataFrame.from_dict(stock_dict)
 scrap_day = datetime.date.today()
 
 # Plot datas using sns and plt
-sns.barplot(x='symbol', y='last prices', data=stocks_df, palette="Blues_d")
+sns.barplot(x='symbol', y='last prices',
+            data=sort_df(stocks_df), palette="Blues_d")
 plt.xticks(rotation=90)
 plt.xlabel('')
 plt.ylabel('PRICES')
-plt.title('CAC40 30 best stocks on Yahoo Finance')
+plt.title(f'CAC40 30 best stocks, {scrap_day}'.upper())
 plt.savefig(f"cac40_{scrap_day}.png")
 plt.show()
+
+# Export data as CSV file
+cwd = os.getcwd()
+stocks_df.to_csv(r'{}/{}.csv'.format(cwd, scrap_day))
