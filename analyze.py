@@ -30,9 +30,17 @@ for file in os.listdir(cwd):
         dataframes['dates'].append(temp)
         dataframes['files'].append(f"{temp}.csv")
 
-index = 0
+index_1 = 0
 for file in dataframes['files']:
-    dataframes['df'][f'df{index}'] = pd.read_csv(file)
-    index += 1
+    dataframes['df'][f'df{index_1}'] = pd.read_csv(file)
+    dataframes['df'][f'df{index_1}'] = dataframes['df'][f'df{index_1}'].set_index("symbol")
+    index_1 += 1
 
-print(dataframes["df"]['df0'])
+index_2 = 0
+for date in dataframes["dates"]:
+    dataframes['df'][f'df{index_2}'] = dataframes['df'][f'df{index_2}'].rename(columns={"last prices":
+                                                                                        f"last prices {date}"})
+    index_2 += 1
+
+print(dataframes['df']['df0'])
+print(dataframes['df']['df1'])
